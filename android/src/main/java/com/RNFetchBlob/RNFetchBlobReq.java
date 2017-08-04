@@ -245,6 +245,12 @@ public class RNFetchBlobReq extends BroadcastReceiver implements Runnable {
                 if(rawRequestBodyArray != null) {
                     requestType = RequestType.Form;
                 }
+                else if((mheaders.containsKey("Content-Type".toLowerCase()) ||
+                        mheaders.containsKey("Content-Type")) &&
+                        cType.isEmpty()) {
+                    //NOTE AWS S3 special handle
+                    }
+                }
                 else if(cType.isEmpty()) {
                     builder.header("Content-Type", "application/octet-stream");
                     requestType = RequestType.SingleFile;
