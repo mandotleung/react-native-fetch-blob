@@ -365,6 +365,18 @@ function df():Promise<{ free : number, total : number }> {
   })
 }
 
+function clearExternalCache():Promise {
+  return new Promise((resolve, reject) => {
+    RNFetchBlob.clearExternalCache((err) => {
+      if(err) {
+        reject(new Error(err))
+      }
+      else
+        resolve()
+    })
+  })
+}
+
 export default {
   RNFetchBlobSession,
   unlink,

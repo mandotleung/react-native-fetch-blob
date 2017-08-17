@@ -38,13 +38,6 @@ function addCompleteDownload(config) {
     return Promise.reject('RNFetchBlob.android.addCompleteDownload only supports Android.')
 }
 
-function clearExternalCache(){
-  if(Platform.OS === 'android')
-    return RNFetchBlob.clearExternalCache()
-  else
-    return Promise.reject('RNFetchBlob.android.clearExternalCache only supports Android.')
-}
-
 export default {
   actionViewIntent,
   getContentIntent,
