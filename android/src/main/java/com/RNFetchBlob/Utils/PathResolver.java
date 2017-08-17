@@ -10,6 +10,8 @@ import android.content.ContentUris;
 import android.os.Environment;
 import android.content.ContentResolver;
 import com.RNFetchBlob.RNFetchBlobUtils;
+import com.facebook.stetho.common.StringUtil;
+
 import java.io.File;
 import java.io.InputStream;
 import java.io.FileOutputStream;
@@ -70,30 +72,17 @@ public class PathResolver {
                 if (isGooglePhotosUri(uri))
                     return uri.getLastPathSegment();
 
-                return getDataColumn(context, uri, null, null);
+                String url = getDataColumn(context, uri, null, null);
+                if(url != null && !url.isEmpty())
+                    return url;
+                else{
+                    //content resolver for scheme content://
+                    return saveNewCopyFromContentResolver(context, uri);
+                }
             }
             // Other Providers
             else{
-                try {
-                    InputStream attachment = context.getContentResolver().openInputStream(uri);
-                    if (attachment != null) {
-                        String filename = getContentName(context.getContentResolver(), uri);
-                        if (filename != null) {
-                            File file = new File(context.getCacheDir(), filename);
-                            FileOutputStream tmp = new FileOutputStream(file);
-                            byte[] buffer = new byte[1024];
-                            while (attachment.read(buffer) > 0) {
-                                tmp.write(buffer);
-                            }
-                            tmp.close();
-                            attachment.close();
-                            return file.getAbsolutePath();
-                        }
-                    }
-                } catch (Exception e) {
-                    RNFetchBlobUtils.emitWarningEvent(e.toString());
-                    return null;
-                }
+                return saveNewCopyFromContentResolver(context, uri);
             }
         }
         // MediaStore (and general)
@@ -111,6 +100,29 @@ public class PathResolver {
         }
 
         return null;
+    }
+
+    private static String saveNewCopyFromContentResolver(Context context, Uri uri){
+        try {
+            InputStream attachment = context.getContentResolver().openInputStream(uri);
+            if (attachment != null) {
+                String filename = getContentName(context.getContentResolver(), uri);
+                if (filename != null) {
+                    File file = new File(context.getCacheDir(), filename);
+                    FileOutputStream tmp = new FileOutputStream(file);
+                    byte[] buffer = new byte[1024];
+                    while (attachment.read(buffer) > 0) {
+                        tmp.write(buffer);
+                    }
+                    tmp.close();
+                    attachment.close();
+                    return file.getAbsolutePath();
+                }
+            }
+        } catch (Exception e) {
+            RNFetchBlobUtils.emitWarningEvent(e.toString());
+            return null;
+        }
     }
 
     private static String getContentName(ContentResolver resolver, Uri uri) {

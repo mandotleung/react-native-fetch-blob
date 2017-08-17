@@ -96,8 +96,25 @@ public class RNFetchBlob extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void clearCache(final Callback callback){
+        threadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                unlink(RCTContext.getCacheDir().getAbsolutePath(), callback);
+            }
+        });
+    }
+
+    @ReactMethod
     public void actionViewIntent(String path, String mime, final Promise promise) {
         try {
+            String resolved = RNFetchBlobFS.normalizePath(path);
+            if(resolved != null)
+                path = resolved;
+            else {
+                promise.reject("RNFetchblob.actionViewIntent can not resolve URI:" + path, "RNFetchblob.actionViewIntent can not resolve URI:" + path);
+                return;
+            }
             Intent intent= new Intent(Intent.ACTION_VIEW)
                     .setDataAndType(Uri.parse("file://" + path), mime);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
