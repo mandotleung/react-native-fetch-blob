@@ -96,11 +96,11 @@ public class RNFetchBlob extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void clearCache(final Callback callback){
+    public void clearExternalCache(final Callback callback){
         threadPool.execute(new Runnable() {
             @Override
             public void run() {
-                unlink(RCTContext.getCacheDir().getAbsolutePath(), callback);
+                unlink(RCTContext.getExternalCacheDir().getAbsolutePath(), callback);
             }
         });
     }
@@ -108,7 +108,7 @@ public class RNFetchBlob extends ReactContextBaseJavaModule {
     @ReactMethod
     public void actionViewIntent(String path, String mime, final Promise promise) {
         try {
-            String resolved = RNFetchBlobFS.normalizePath(path);
+            String resolved = RNFetchBlobFS.normalizePath(path, true);
             if(resolved != null)
                 path = resolved;
             else {

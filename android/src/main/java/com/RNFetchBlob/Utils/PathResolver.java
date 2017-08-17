@@ -18,6 +18,10 @@ import java.io.FileOutputStream;
 public class PathResolver {
     public static String getRealPathFromURI(final Context context, final Uri uri) {
 
+    }
+
+    public static String getRealPathFromURI(final Context context, final Uri uri, final boolean saveExternal) {
+
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
         // DocumentProvider
@@ -76,12 +80,12 @@ public class PathResolver {
                     return url;
                 else{
                     //content resolver for scheme content://
-                    return saveNewCopyFromContentResolver(context, uri);
+                    return saveNewCopyFromContentResolver(context, uri, saveExternal);
                 }
             }
             // Other Providers
             else{
-                return saveNewCopyFromContentResolver(context, uri);
+                return saveNewCopyFromContentResolver(context, uri, saveExternal);
             }
         }
         // MediaStore (and general)
@@ -101,13 +105,14 @@ public class PathResolver {
         return null;
     }
 
-    private static String saveNewCopyFromContentResolver(Context context, Uri uri){
+    private static String saveNewCopyFromContentResolver(Context context, Uri uri, boolean saveExternal){
         try {
             InputStream attachment = context.getContentResolver().openInputStream(uri);
             if (attachment != null) {
                 String filename = getContentName(context.getContentResolver(), uri);
                 if (filename != null) {
-                    File file = new File(context.getCacheDir(), filename);
+                    //use getExternalCacheDir allow access by other app for actionviewintent
+                    File file = new File(saveExternal ? context.getExternalCacheDir() : context.getCacheDir(), filename);
                     FileOutputStream tmp = new FileOutputStream(file);
                     byte[] buffer = new byte[1024];
                     while (attachment.read(buffer) > 0) {

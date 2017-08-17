@@ -902,6 +902,10 @@ public class RNFetchBlobFS {
      * @return Normalized string
      */
     static String normalizePath(String path) {
+        return normalizePath(path, false);
+    }
+
+    static String normalizePath(String path, boolean saveExternal) {
         if(path == null)
             return null;
         if(!path.matches("\\w+\\:.*"))
@@ -915,7 +919,7 @@ public class RNFetchBlobFS {
             return path;
         }
         else
-            return PathResolver.getRealPathFromURI(RNFetchBlob.RCTContext, uri);
+            return PathResolver.getRealPathFromURI(RNFetchBlob.RCTContext, uri, saveExternal);
     }
 
 }
