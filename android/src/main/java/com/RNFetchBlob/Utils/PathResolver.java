@@ -122,6 +122,8 @@ public class PathResolver {
             RNFetchBlobUtils.emitWarningEvent(e.toString());
             return null;
         }
+        RNFetchBlobUtils.emitWarningEvent("content resolver cannot handle the uri");
+        return null;
     }
 
     private static String getContentName(ContentResolver resolver, Uri uri) {
