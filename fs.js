@@ -367,6 +367,8 @@ function df():Promise<{ free : number, total : number }> {
 
 function clearExternalCache():Promise {
   return new Promise((resolve, reject) => {
+    if(Platform.OS === 'ios')
+      reject(new Error('RNFetchBlob.fs.clearExternalCache only supports Android.'))
     RNFetchBlob.clearExternalCache((err) => {
       if(err) {
         reject(new Error(err))
