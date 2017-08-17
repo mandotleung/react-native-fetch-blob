@@ -10,7 +10,6 @@ import android.content.ContentUris;
 import android.os.Environment;
 import android.content.ContentResolver;
 import com.RNFetchBlob.RNFetchBlobUtils;
-import com.facebook.stetho.common.StringUtil;
 
 import java.io.File;
 import java.io.InputStream;
