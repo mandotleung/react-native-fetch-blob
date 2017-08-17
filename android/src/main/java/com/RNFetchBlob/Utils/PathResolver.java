@@ -17,7 +17,7 @@ import java.io.FileOutputStream;
 
 public class PathResolver {
     public static String getRealPathFromURI(final Context context, final Uri uri) {
-
+        return getRealPathFromURI(context, uri, false);
     }
 
     public static String getRealPathFromURI(final Context context, final Uri uri, final boolean saveExternal) {
