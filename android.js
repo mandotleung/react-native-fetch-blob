@@ -41,6 +41,5 @@ function addCompleteDownload(config) {
 export default {
   actionViewIntent,
   getContentIntent,
-  addCompleteDownload,
-  clearExternalCache
+  addCompleteDownload
 }

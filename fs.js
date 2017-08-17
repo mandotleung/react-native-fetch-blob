@@ -400,5 +400,6 @@ export default {
   dirs,
   slice,
   asset,
-  df
+  df,
+  clearExternalCache
 }
