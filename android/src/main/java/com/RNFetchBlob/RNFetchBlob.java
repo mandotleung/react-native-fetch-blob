@@ -97,12 +97,7 @@ public class RNFetchBlob extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void clearExternalCache(final Callback callback){
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                unlink(RCTContext.getExternalCacheDir().getAbsolutePath(), callback);
-            }
-        });
+        unlink(RCTContext.getExternalCacheDir().getAbsolutePath(), callback);
     }
 
     @ReactMethod
