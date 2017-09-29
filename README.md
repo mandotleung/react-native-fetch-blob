@@ -5,3 +5,12 @@
 
 - (Android) **Add cleanExternalCache function** for clean up context.getExternalCacheDir() folder since normalizePath(saveExternal) will save the copy mentioned above into the folder.
 
+For S3: 
+```
+if((mheaders.containsKey("Content-Type".toLowerCase()) ||
+mheaders.containsKey("Content-Type")) &&
+cType.isEmpty()){
+//NOTE AWS S3 special handle
+}
+}
+```
